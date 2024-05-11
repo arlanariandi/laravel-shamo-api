@@ -89,4 +89,35 @@ class UserController extends Controller
     {
         return ResponseFormatter::success($request->user(), 'Data profile berhasil diambil');
     }
+
+    public function updateProfile(Request $request)
+    {
+        try {
+            $data = $request->all();
+
+            $user = Auth::user();
+            $user->update($data);
+
+            return ResponseFormatter::success($user, 'Profile updated');
+        } catch (Exception $error) {
+            return ResponseFormatter::error([
+                'message' => 'Something went wrong',
+                'error' => $error
+            ], 'Updated Failed', 500);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        try {
+            $token = $request->user()->currentAccessToken()->delete();
+
+            return ResponseFormatter::success($token, 'Token Revoked');
+        } catch (Exception $error) {
+            return ResponseFormatter::error([
+                'message' => 'Something went wrong',
+                'error' => $error
+            ], 'Logout failed', 500);
+        }
+    }
 }
