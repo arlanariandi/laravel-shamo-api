@@ -18,7 +18,8 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard.category.index') }}" :active="request()->routeIs('dashboard.category.index')">
+                    <x-nav-link href="{{ route('dashboard.category.index') }}"
+                                :active="request()->routeIs('dashboard.category.index') ||request()->routeIs('dashboard.category.*') ">
                         {{ __('Category') }}
                     </x-nav-link>
                 </div>

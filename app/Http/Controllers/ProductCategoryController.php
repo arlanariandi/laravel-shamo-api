@@ -23,6 +23,11 @@ class ProductCategoryController extends Controller
                         <a class="inline-block border-none bg-violet-500 text-white rounded-md px-4 py-1 m-1 font-semibold transition duration-500 ease select-none hover:bg-violet-800 focus:outline-none focus:shadow-outline" href="' . route('dashboard.category.edit', $item->id) . '">
                             Edit
                         </a>
+
+                        <form class="inline-block" action="' . route('dashboard.category.destroy', $item->id) . '" method="post">
+                            <button class="inline-block border-none bg-red-500 text-white rounded-md px-4 py-1 m-1 font-semibold transition duration-500 ease select-none hover:bg-red-800 focus:outline-none focus:shadow-outline">Delete</button>
+                            ' . method_field('delete') . csrf_field() . '
+                        </form>
                     ';
                 })
                 ->rawColumns(['action'])
@@ -64,7 +69,9 @@ class ProductCategoryController extends Controller
      */
     public function edit(ProductCategory $category)
     {
-        //
+        return view('pages.dashboard.category.edit', [
+            'item' => $category
+        ]);
     }
 
     /**
@@ -72,7 +79,10 @@ class ProductCategoryController extends Controller
      */
     public function update(ProductCategoryRequest $request, ProductCategory $category)
     {
-        //
+        $data = $request->all();
+        $category->update($data);
+
+        return redirect()->route('dashboard.category.index');
     }
 
     /**
@@ -80,6 +90,8 @@ class ProductCategoryController extends Controller
      */
     public function destroy(ProductCategory $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->route('dashboard.category.index');
     }
 }
